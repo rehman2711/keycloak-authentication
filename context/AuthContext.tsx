@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import React, {
   createContext,
@@ -6,17 +6,18 @@ import React, {
   useEffect,
   useMemo,
   useState,
-} from "react";
-import keycloak from "@/lib/keycloak";
-import type { KeycloakInstance } from "keycloak-js";
+} from "react"
+import keycloak from "@/lib/keycloak"
+import type { KeycloakInstance } from "keycloak-js"
+import Loading from "@/components/ui/loading"
 
 interface AuthContextType {
-  keycloak?: KeycloakInstance;
-  authenticated: boolean;
-  initialized: boolean;
-  login: () => void;
-  logout: () => void;
-  token?: string;
+  keycloak?: KeycloakInstance
+  authenticated: boolean
+  initialized: boolean
+  login: () => void
+  logout: () => void
+  token?: string
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -24,19 +25,15 @@ const AuthContext = createContext<AuthContextType>({
   initialized: false,
   login: () => {},
   logout: () => {},
-});
+})
 
-export const AuthProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  const [authenticated, setAuthenticated] = useState(false);
-  const [initialized, setInitialized] = useState(false);
-  const [token, setToken] = useState<string | undefined>(undefined);
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [authenticated, setAuthenticated] = useState(false)
+  const [initialized, setInitialized] = useState(false)
+  const [token, setToken] = useState<string | undefined>(undefined)
 
   useEffect(() => {
-    let mounted = true;
+    let mounted = true
 
     const initKeycloak = async () => {
       try {
@@ -46,50 +43,50 @@ export const AuthProvider = ({
             window.location.origin + "/silent-check-sso.html",
           pkceMethod: "S256",
           checkLoginIframe: false,
-        });
+        })
 
-        if (!mounted) return;
+        if (!mounted) return
 
-        setAuthenticated(auth);
-        setToken(keycloak.token);
-        setInitialized(true);
+        setAuthenticated(auth)
+        setToken(keycloak.token)
+        setInitialized(true)
 
         keycloak.onTokenExpired = () => {
           keycloak
             .updateToken(30)
             .then((refreshed) => {
               if (refreshed) {
-                setToken(keycloak.token);
+                setToken(keycloak.token)
               }
             })
             .catch(() => {
-              logout();
-            });
-        };
+              logout()
+            })
+        }
       } catch (err) {
-        console.error("Keycloak init failed:", err);
-        setInitialized(true);
+        console.error("Keycloak init failed:", err)
+        setInitialized(true)
       }
-    };
+    }
 
-    initKeycloak();
+    initKeycloak()
 
     return () => {
-      mounted = false;
-    };
-  }, []);
+      mounted = false
+    }
+  }, [])
 
   const login = () => {
     keycloak.login({
       redirectUri: window.location.origin + "/dashboard",
-    });
-  };
+    })
+  }
 
   const logout = () => {
     keycloak.logout({
       redirectUri: window.location.origin + "/",
-    });
-  };
+    })
+  }
 
   const value = useMemo(
     () => ({
@@ -101,19 +98,17 @@ export const AuthProvider = ({
       token,
     }),
     [authenticated, initialized, token]
-  );
+  )
 
   if (!initialized) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse px-6 py-3 bg-indigo-50 text-indigo-600 rounded-lg font-semibold">
-          Loading...
-        </div>
+      <div className="flex min-h-screen items-center justify-center">
+          <Loading />
       </div>
-    );
+    )
   }
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+}
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext)

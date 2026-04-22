@@ -26,7 +26,27 @@ This project uses Keycloak to handle user login and security.
 - Create a realm (like a workspace)  
 - Create a client (your app)  
 - Add users (people who can log in)  
-- Assign roles if needed (admin, employee, etc.)  
+- Assign roles if needed (admin, employee, etc.)
+
+
+
+
+
+# Local Image changes Sync
+
+1. Rebuild the image
+
+From your project folder:
+
+docker build -t your-username/keycloak:latest .
+2. Push updated image to Docker Hub
+docker push your-username/keycloak:latest
+
+This overwrites the latest tag with your new version.
+
+---
+Image deployement is on s14 account
+---
 
 ## ⚠️ Important
 

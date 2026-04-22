@@ -1,21 +1,35 @@
-# Next.js template
+# 🔐 Login System (Keycloak)
 
-This is a Next.js template with shadcn/ui.
+This project uses Keycloak to handle user login and security.
 
-## Adding components
+## 🧾 What this means
 
-To add components to your app, run the following command:
+- Users can log in and log out safely  
+- Passwords are not stored in this app  
+- Access can be controlled (like admin or normal user)
 
-```bash
-npx shadcn@latest add button
-```
+## 🚀 How it works (Simple)
 
-This will place the ui components in the `components` directory.
+1. You click **Login**  
+2. You are sent to a secure login page  
+3. After entering your details, you come back to the app  
+4. The app knows who you are and what you can access  
 
-## Using components
+## 🛠️ What is needed
 
-To use the components in your app, import them as follows:
+- A running Keycloak server (handles login)  
+- A configured app connection (client)  
+- Users created inside Keycloak  
 
-```tsx
-import { Button } from "@/components/ui/button";
-```
+## 🔑 Basic Setup (High-level)
+
+- Create a realm (like a workspace)  
+- Create a client (your app)  
+- Add users (people who can log in)  
+- Assign roles if needed (admin, employee, etc.)  
+
+## ⚠️ Important
+
+- This app depends on Keycloak to work  
+- If Keycloak is down → login will not work  
+- Always keep login details secure  

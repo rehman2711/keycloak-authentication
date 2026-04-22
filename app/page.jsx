@@ -1,27 +1,20 @@
 "use client"
 
 import { useAuth } from "@/context/AuthContext"
-import { Button } from "@/components/ui/button"
+import Navbar from "@/components/ui/navbar"
+import Hero from "@/components/ui/home"
 
 export default function Page() {
-  const { login, logout, authenticated, initialized } = useAuth()
+  const { initialized } = useAuth()
 
-  // optional but correct: avoid flicker before init
   if (!initialized) return null
 
   return (
-    <div>
-      {!authenticated && (
-        <Button className="mt-2" onClick={login}>
-          Login
-        </Button>
-      )}
-
-      {authenticated && (
-        <Button className="mt-2" onClick={logout}>
-          Logout
-        </Button>
-      )}
-    </div>
+    <>
+      <div className="max-w-6xl mx-auto overflow-hidden">
+        <Navbar />
+        <Hero />
+      </div>
+    </>
   )
 }

@@ -5,7 +5,7 @@ import { useAuth } from "@/context/AuthContext"
 import { useRouter } from "next/navigation"
 
 export default function Home() {
-  const { authenticated } = useAuth()
+  const { login, authenticated } = useAuth()
   const router = useRouter()
 
   return (
@@ -24,7 +24,7 @@ export default function Home() {
       <div className="mt-8 flex gap-4">
         {!authenticated ? (
           <>
-            <Button className="bg-brand text-brand-foreground">
+            <Button className="bg-brand text-brand-foreground" onClick={login}>
               Login with Keycloak
             </Button>
             <Button
